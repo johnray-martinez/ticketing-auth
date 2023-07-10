@@ -12,12 +12,12 @@ import { errorHandler } from './middlewares/error-handler';
 import { NotFoundError } from './errors/not-found';
 
 const app = express();
-app.set('trust proxy', true);
+app.set('trust proxy', true); // to trust traffic because we are using ingress
 app.use(json());
 app.use(
   cookieSession({
     signed: false,
-    secure: true
+    secure: true // to use https
   })
 );
 
