@@ -30,6 +30,15 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true
   }
+}, {
+  toJSON: { 
+    transform(_, ret) {
+      ret.id = ret._id;
+      delete ret._id;
+      delete ret.password;
+      delete ret.__v;
+    }
+  }
 });
 
 // used function keyword to retain the this

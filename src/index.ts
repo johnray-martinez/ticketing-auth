@@ -10,6 +10,7 @@ import { signupUserRouter } from './routes/signup';
 import { signoutUserRouter } from './routes/signout';
 import { errorHandler } from './middlewares/error-handler';
 import { NotFoundError } from './errors/not-found';
+import { MissingCredentialsError } from './errors/missing-credentials-error';
 
 const app = express();
 app.set('trust proxy', true); // to trust traffic because we are using ingress
@@ -33,6 +34,10 @@ app.all('*', () => {
 app.use(errorHandler);
 
 const start = async () => {
+  if (!process.env.jwt) {
+    throw new MissingCredentialsError('JWT key is not valid or is missing.');
+  } 
+
   try {
     await mongoose.connect('mongodb://auth-mongo-clusterip-srv:27017/auth');
     console.log('Connected to mongodb');
